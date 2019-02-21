@@ -14,7 +14,7 @@ var SEARCH_TEXT = "NO";
 var MAX_ATTEMPTS = 50;
 var TIMEOUT_INTERVAL = 100; //ms
 var ELEMENT_TYPE = "button";
-var t, attemptNo = 0; //timeout & attempt tracking.
+var codeInterval, attemptNo = 0; //timeout & attempt tracking.
 
 (function() {
     'use strict';
@@ -27,20 +27,22 @@ function findAndClickMatchingItem() {
     attemptNo += 1;
     var attemptCounter = " (attempt " + attemptNo + " of " + MAX_ATTEMPTS + ")";
     console.log("Checking for '" + SEARCH_TEXT + "' in any '" + ELEMENT_TYPE + "'." + attemptCounter);
+
     var matchingItem = $(ELEMENT_TYPE + ":contains('" + SEARCH_TEXT + "')");
 
     console.log("Found " + matchingItem.length + " items of type: '" + ELEMENT_TYPE + "'." + attemptCounter);
+
     if (matchingItem.length > 0)
     {
         matchingItem.click();
         console.log("Clicked " + ELEMENT_TYPE + "..." );
-        clearInterval(t);
+        clearInterval(codeInterval);
         console.log("Stopping script.");
     }
     else if (attemptNo >= MAX_ATTEMPTS)
     {
         console.log("Max attempts reached. Clearing interval & exiting...");
-        clearInterval(t);
+        clearInterval(codeInterval);
     }
     else
     {
@@ -50,6 +52,6 @@ function findAndClickMatchingItem() {
 
 
 $(document).ready(function() {
-    t = setInterval(findAndClickMatchingItem, TIMEOUT_INTERVAL);
+    codeInterval = setInterval(findAndClickMatchingItem, TIMEOUT_INTERVAL);
 });
 
